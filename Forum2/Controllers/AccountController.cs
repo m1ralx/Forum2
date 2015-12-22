@@ -270,10 +270,7 @@ namespace Forum.Controllers
             return View(model);
         }
 
-        private static string CaptchaSecret
-        {
-            get { return "6LdYRRITAAAAAG_ei6t5elgq63IZBc0RCJBO68IX"; }
-        }
+        private static string CaptchaSecret => "6LeumRMTAAAAAAj1htyeLKkHpMexnaT_TMNC0Ee2";
 
         //
         // GET: /Account/ConfirmEmail
