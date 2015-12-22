@@ -60,11 +60,16 @@ namespace Forum.Controllers
             return View("Users", UserManager.Users.ToList());
         }
 
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
+
         public async Task<ActionResult> Delete(string id)
         {
             if (!User.IsInRole("Admin") && User.Identity.GetUserId() != id)
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            //AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            db.Messages.RemoveRange(db.Messages.Where(m => m.Owner.Id == id).ToList());
+            db.Threads.RemoveRange(db.Threads.Where(t => t.Owner.Id == id).ToList());
+            await db.SaveChangesAsync();
             var result = await UserManager.DeleteAsync(await UserManager.FindByIdAsync(id));
             if (result.Succeeded)
                 return User.IsInRole("Admin") ? RedirectToAction("Users") : RedirectToAction("Index", "Boards");
