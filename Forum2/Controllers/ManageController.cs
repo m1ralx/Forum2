@@ -78,6 +78,7 @@ namespace Forum2.Controllers
             }
             catch (Exception)
             {
+                AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
                 return RedirectToAction("Index", "Boards");
             }
             
