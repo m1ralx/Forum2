@@ -1,0 +1,20 @@
+﻿@using Microsoft.AspNet.Identity
+@model Forum2.Models.Message
+
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => modelItem.Content)
+    </td>
+    <td>@Model.Owner.UserName</td>
+    <td>
+        @Html.DisplayFor(modelItem => modelItem.PublicationTime)
+    </td>
+    <td>
+        @if (User.IsInRole("Admin") || User.Identity.GetUserId() == Model.Owner.Id)
+        {
+            @Html.ActionLink("Edit", "Edit", "Messages", new {id = Model.Id}, null)
+            @:|
+            @Html.ActionLink("Delete", "Delete", "Messages", new {id = Model.Id}, new { @style = "color: red;" })
+        }
+    </td>
+</tr>

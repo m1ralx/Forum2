@@ -1,0 +1,100 @@
+﻿@using Microsoft.AspNet.Identity
+@using Forum2.Models
+@using PagedList
+@using PagedList.Mvc
+@model ForumThread
+
+@{
+    IPagedList<Message> messages = PagedListExtensions.ToPagedList(Model.Messages, ViewBag.Page, ViewBag.PageSize);
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <hr/>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+    </dl>
+</div>
+
+<table class="table">
+    <tbody id="messages">
+        <tr>
+            <th class="col-md-6">
+                @Html.DisplayNameFor(model => new Message().Content)
+            </th>
+            <th class="col-md-3">@Html.DisplayNameFor(model => new Message().Owner.UserName)</th>
+            <th class="col-md-2">
+                @Html.DisplayNameFor(model => new Message().PublicationTime)
+            </th>
+            <th class="col-md-4"></th>
+        </tr>
+
+        @foreach (var item in messages)
+        {
+            Html.RenderPartial("_Message", item);
+        }
+    </tbody>
+</table>
+
+@using (Ajax.BeginForm("Create", "Messages", new AjaxOptions
+{
+    InsertionMode = InsertionMode.InsertAfter,
+    UpdateTargetId = "messages"
+}))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("threadId", Model.Id)
+    <div class="form-horizontal">
+        <h4>Message</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => new Message().Content, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => new Message().Content, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => new Message().Content, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Post" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+@Html.PagedListPager(messages, page => Url.Action("Details", new { id = Model.Id, page }))
+
+<p>
+    @if (User.IsInRole("Admin") || User.Identity.GetUserId() == Model.Owner.Id)
+    {
+        @Html.ActionLink("Edit", "Edit", new {id = Model.Id}) @:|
+    }
+
+
+    @Html.ActionLink("Back to Board", "Details", "Boards", new {id = Model.Board.Id}, null)
+</p>

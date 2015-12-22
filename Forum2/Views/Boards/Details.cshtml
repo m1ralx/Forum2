@@ -1,0 +1,84 @@
+﻿@using Forum.Models
+@using Microsoft.AspNet.Identity
+@using Forum2.Models
+@using PagedList
+@using HtmlHelper = PagedList.Mvc.HtmlHelper
+@model Forum2.Models.Board
+
+@{
+    IPagedList<ForumThread> threads = PagedListExtensions.ToPagedList(Model.Threads, ViewBag.Page, ViewBag.PageSize);
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Board</h4>
+    <hr/>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+    </dl>
+</div>
+
+<p>
+    @Html.ActionLink("Create new thread", "Create", "ForumThreads", new RouteValueDictionary { { "boardId", Model.Id } }, null)
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => new ForumThread().Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => new ForumThread().Description)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in threads)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.Name, "Thread", new { id = item.Id }, null)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @if (User.IsInRole("Admin") || User.Identity.GetUserId() == item.Owner.Id)
+                { 
+                    @:|
+                    @Html.ActionLink("Edit", "Edit", "ForumThreads", new {id = item.Id}, null)
+                    @:|
+                    @Html.ActionLink("Delete", "Delete", "ForumThreads", new {id = item.Id}, new { @style = "color: red;" })
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+@HtmlHelper.PagedListPager(Html, threads, page => Url.Action("Details", new { id = Model.Id, page }))
+
+<p>
+    @if (User.IsInRole("Admin"))
+    {
+        @Html.ActionLink("Edit", "Edit", new {id = Model.Id}) @:|
+    }
+    @Html.ActionLink("Back to List", "Index")
+</p>
+

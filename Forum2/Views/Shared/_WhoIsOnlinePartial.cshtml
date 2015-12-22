@@ -1,0 +1,8 @@
+﻿@model IEnumerable<Forum.Models.ApplicationUser>
+
+<div>
+    @foreach (var user in Model)
+    {
+        @user.UserName@:,
+    }
+</div>
