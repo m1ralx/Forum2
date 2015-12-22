@@ -77,4 +77,3 @@ C:\Users\Alexey\Desktop\Forum2\Forum2\bin\MySql.Web.dll
 C:\Users\Alexey\Desktop\Forum2\Forum2\bin\WebMatrix.WebData.dll
 C:\Users\Alexey\Desktop\Forum2\Forum2\bin\WebMatrix.Data.dll
 C:\Users\Alexey\Desktop\Forum2\Forum2\bin\WebMatrix.WebData.xml
-C:\Users\Alexey\Desktop\Forum2\Forum2\bin\WebMatrix.Data.xml
