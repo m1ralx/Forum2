@@ -7,12 +7,10 @@ using Forum.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
-using Forum2;
-using Forum2.Models;
 
-namespace Forum.Controllers
+namespace Forum2.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class RolesController : Controller
     {
         ApplicationDbContext context = new ApplicationDbContext();

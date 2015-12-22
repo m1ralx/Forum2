@@ -7,7 +7,7 @@
 
 <h2>Boards</h2>
 
-@if (User.Identity.IsAuthenticated)
+@if (User.IsInRole("Admin"))
 {
     <p>
         @Html.ActionLink("Create New", "Create")

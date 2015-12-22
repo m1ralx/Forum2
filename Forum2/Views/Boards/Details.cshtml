@@ -1,9 +1,8 @@
-﻿@using Forum.Models
-@using Microsoft.AspNet.Identity
+﻿@using Microsoft.AspNet.Identity
 @using Forum2.Models
 @using PagedList
 @using HtmlHelper = PagedList.Mvc.HtmlHelper
-@model Forum2.Models.Board
+@model Board
 
 @{
     IPagedList<ForumThread> threads = PagedListExtensions.ToPagedList(Model.Threads, ViewBag.Page, ViewBag.PageSize);
