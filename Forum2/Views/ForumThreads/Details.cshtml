@@ -56,7 +56,8 @@
 @using (Ajax.BeginForm("Create", "Messages", new AjaxOptions
 {
     InsertionMode = InsertionMode.InsertAfter,
-    UpdateTargetId = "messages"
+    UpdateTargetId = "messages",
+    OnSuccess = "clearForm"
 }))
 {
     @Html.AntiForgeryToken()
@@ -75,7 +76,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Post" class="btn btn-default" />
+                <input type="submit" value="Post" class="btn btn-default"/>
             </div>
         </div>
     </div>
@@ -86,7 +87,11 @@
 }
 @Scripts.Render("~/bundles/jquery")
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-
+<script>
+    function clearForm() {
+        $('#Content').val('');
+    }
+</script>
 @Html.PagedListPager(messages, page => Url.Action("Details", new { id = Model.Id, page }))
 
 <p>
